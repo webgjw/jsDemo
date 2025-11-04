@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	// 创建这样一个对象，它将字母存储在一个数组中，并且用一个方法可以将字母连在一起，显示成一个单词。
+	function LetterArray() {
+		this.letters = [];
+		this.add = add;
+		this.makeWord = makeWord;
+	}
+
+	function add(letter) {
+		this.letters.push(letter);
+	}
+
+	function makeWord() {
+		return this.letters.join('');
+	}
+
+	var word = new LetterArray();
+	word.add('H');
+	word.add('e');
+	word.add('l');
+	word.add('l');
+	word.add('o');
+
+	console.log(word.makeWord());
+</script>
+</body>
+</html>

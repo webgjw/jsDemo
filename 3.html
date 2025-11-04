@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	// 修改本章前面出现过的 weeklyTemps 对象，使它可以使用一个二维数组来存储每月的有用数据。增加一些方法用以显示月平均数、具体某一周平均数和所有周的平均数。
+	function WeekTemps() {
+		this.dataStore = []; // 二维数组，每月包含多个周
+		this.add = add;
+		this.monthlyAverage = monthlyAverage;
+		this.weeklyAverage = weeklyAverage;
+		this.allWeeksAverage = allWeeksAverage;
+		this.displayAllData = displayAllData;
+	}
+
+	function add(weekIndex, temp) {
+		// 如果该周尚未初始化，创建一个新数组
+		if (!this.dataStore[weekIndex]) {
+			this.dataStore[weekIndex] = [];
+		}
+		this.dataStore[weekIndex].push(temp);
+	}
+
+	function monthlyAverage() {
+		var total = 0;
+		var count = 0;
+
+		for (var week = 0; week < this.dataStore.length; week++) {
+			if (this.dataStore[week]) {
+				for (var day = 0; day < this.dataStore[week].length; day++) {
+					total += this.dataStore[week][day];
+					count++;
+				}
+			}
+		}
+
+		return count > 0 ? total / count : 0;
+	}
+
+	function weeklyAverage(weekIndex) {
+		if (!this.dataStore[weekIndex] || this.dataStore[weekIndex].length === 0) {
+			return 0;
+		}
+
+		var total = 0;
+		for (var day = 0; day < this.dataStore[weekIndex].length; day++) {
+			total += this.dataStore[weekIndex][day];
+		}
+
+		return total / this.dataStore[weekIndex].length;
+	}
+
+	function allWeeksAverage() {
+		var weeklyAverages = [];
+
+		for (var week = 0; week < this.dataStore.length; week++) {
+			if (this.dataStore[week] && this.dataStore[week].length > 0) {
+				var weekAvg = this.weeklyAverage(week);
+				weeklyAverages.push({
+					week: week,
+					average: weekAvg
+				});
+			}
+		}
+
+		return weeklyAverages;
+	}
+
+	function displayAllData() {
+		console.log("所有温度数据: ");
+		for (var week = 0; week < this.dataStore.length; week++) {
+			if (this.dataStore[week]) {
+				console.log("第" + (week + 1) + "周: " + this.dataStore[week].join(", "));
+			}
+		}
+	}
+
+	// 使用示例
+	var monthTemps = new WeekTemps();
+
+	// 添加数据 （周索引从0开始）
+	monthTemps.add(0, 52);
+	monthTemps.add(0, 55);
+	monthTemps.add(0, 61);
+	monthTemps.add(0, 65);
+	monthTemps.add(0, 55);
+	monthTemps.add(0, 50);
+	monthTemps.add(0, 52);
+
+	monthTemps.add(1, 56);
+	monthTemps.add(1, 58);
+	monthTemps.add(1, 62);
+	monthTemps.add(1, 66);
+	monthTemps.add(1, 60);
+	monthTemps.add(1, 55);
+	monthTemps.add(1, 58);
+
+	monthTemps.add(2, 60);
+	monthTemps.add(2, 62);
+	monthTemps.add(2, 65);
+	monthTemps.add(2, 68);
+	monthTemps.add(2, 62);
+	monthTemps.add(2, 58);
+	monthTemps.add(2, 60);
+
+	monthTemps.add(3, 58);
+	monthTemps.add(3, 55);
+	monthTemps.add(3, 52);
+	monthTemps.add(3, 50);
+	monthTemps.add(3, 48);
+	monthTemps.add(3, 45);
+	monthTemps.add(3, 42);
+
+	// 显示所有数据
+	monthTemps.displayAllData();
+
+	// 计算月平均温度
+	console.log("月平均温度: " + monthTemps.monthlyAverage().toFixed(2));
+
+	// 计算具体某一周的平均温度
+	console.log("第2周平均温度: " + monthTemps.weeklyAverage(1).toFixed(2));
+
+	// 计算所有周的平均温度
+	var allAverages = monthTemps.allWeeksAverage();
+	console.log("所有周的平均温度: ");
+	allAverages.forEach(function(weekData) {
+		console.log("第" + (weekData.week + 1) + "周: " + weekData.average.toFixed(2));
+	});
+</script>
+</body>
+</html>
