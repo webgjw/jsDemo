@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	/*增加一个向列表中插入元素的方法，该方法只在待插元素小于列表中的所有元素时才执
+	行插入操作。*/
+	class SmartList {
+		constructor() {
+			this.items = [];
+		}
+
+		// 比较两个元素的大小
+		compare(a, b) {
+			if (typeof a === 'number' && typeof b === 'number') {
+				return a > b;
+			} else if (typeof a === 'string' && typeof b === 'string') {
+				return a > b;
+			} else {
+				throw new Error('元素类型不一致，无法比较');
+			}
+		}
+
+		// 检查元素是否小于列表中所有元素
+		isLessThanAll(element) {
+			if (this.items.length === 0) {
+				return true; // 空列表，任何元素都可以插入
+			}
+
+			for (let item of this.items) {
+				if (this.compare(element, item) || element === item) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		// 条件插入方法
+		conditionalInsert(element) {
+			if (this.isLessThanAll(element)) {
+				this.items.push(element);
+				console.log(`元素 ${element} 已成功插入列表`);
+				return true;
+			} else {
+				console.log(`元素 ${element} 不小于列表中的所有元素，插入操作拒绝`);
+				return false;
+			}
+		}
+
+		// 显示列表内容
+		display() {
+			console.log('当前列表:', this.items);
+			return this.items;
+		}
+
+		// 获取列表长度
+		getLength() {
+			return this.items.length;
+		}
+
+		// 清空列表
+		clear() {
+			this.items = [];
+		}
+	}
+
+	console.log('=== 数字列表测试 ===');
+	const numberList = new SmartList();
+
+	// 测试数字插入
+	numberList.conditionalInsert(5); // ok
+	numberList.conditionalInsert(3); // ok
+	numberList.conditionalInsert(8); // nok
+	numberList.conditionalInsert(7); // nok
+	numberList.display(); // [5, 3]
+
+	console.log('\n=== 字母列表测试 ===');
+	const letterList = new SmartList();
+
+	// 测试字母插入
+	letterList.conditionalInsert('c'); // ok
+	letterList.conditionalInsert('a'); // ok
+	letterList.conditionalInsert('f'); // nok
+	letterList.conditionalInsert('d'); // nok
+	letterList.display(); // ['c', 'a']
+
+	console.log('\n=== 混合类型测试 ===');
+	const mixedList = new SmartList();
+
+	try {
+		mixedList.conditionalInsert(10); // ok
+		mixedList.conditionalInsert('z'); // nok
+	} catch (error) {
+		console.log('错误:', error.message);
+	}
+	mixedList.display(); // [10]
+</script>
+</body>
+</html>
