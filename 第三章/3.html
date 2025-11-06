@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	/*
+		创建 Person 类，该类用于保存人的姓名和性别信息。创建一个至少包含 10 个
+		Person 对象的列表。写一个函数显示列表中所有拥有相同性别的人。
+	*/
+	class Person {
+		constructor(name, gender) {
+			this.name = name;
+			this.gender = gender;
+		}
+	}
+
+	// 创建包含10个Person对象的列表
+	const personList = [
+		new Person('张三', '男'),
+	    new Person('李四', '男'),
+	    new Person('王五', '男'),
+	    new Person('赵六', '女'),
+	    new Person('钱七', '女'),
+	    new Person('孙八', '男'),
+	    new Person('周九', '女'),
+	    new Person('吴十', '女'),
+	    new Person('郑十一', '男'),
+	    new Person('王十二', '女')
+	];
+
+	// 显示列表中所有拥有相同性别的人的函数
+	function displayPeopleByGender(personList) {
+		const genderGroups = {};
+
+		// 按性别分组
+		personList.forEach(person => {
+			if (!genderGroups[person.gender]) {
+				genderGroups[person.gender] = [];
+			}
+			genderGroups[person.gender].push(person.name);
+		});
+
+		// 显示结果
+		for (const gender in genderGroups) {
+			console.log(`性别为 ${gender} 的人有：${genderGroups[gender].join('、')}`);
+        	console.log(`共 ${genderGroups[gender].length} 人\n`);
+		}
+	}
+
+	// 调用函数显示结果
+	displayPeopleByGender(personList);
+</script>
+</body>
+</html>
