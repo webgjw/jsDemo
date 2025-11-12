@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	// 栈可以用来判断一个算术表达式中的括号是否匹配。编写一个函数，该函数接受一个算
+	// 术表达式作为参数，返回括号缺失的位置。下面是一个括号不匹配的算术表达式的例
+	// 子：2.3 + 23 / 12 + (3.14159×0.24。
+	function checkParentheses(expression) {
+		const stack = [];
+		const result = {
+			isValid: true,
+			missingPositions: [],
+			errors: []
+		};
+
+		for (let i = 0; i < expression.length; i++) {
+			const char = expression[i];
+
+			// 遇到左括号，将其位置压入栈中
+			if (char === '(') {
+				stack.push({
+					type: 'left',
+					position: i,
+					char: char
+				});
+			}
+			// 遇到右括号
+			else if (char === ')') {
+				// 如果栈为空，说明有未匹配的右括号
+				if (stack.length === 0) {
+					result.isValid = false;
+					result.missingPositions.push(i);
+					result.errors.push(`位置 ${i}: 多余的右括号 ")"`);
+				} else {
+					// 弹出匹配的左括号
+					stack.pop();
+				}
+			}
+		}
+
+		// 检查栈中是否还有未匹配的左括号
+	    while (stack.length > 0) {
+	        const unmatched = stack.pop();
+	        result.isValid = false;
+	        result.missingPositions.push(unmatched.position);
+	        result.errors.push(`位置 ${unmatched.position}: 未闭合的左括号 "("`);
+	    }
+	    
+	    return result;
+	}
+
+	// 测试函数
+	function testExpression(expression) {
+	    console.log(`测试表达式: "${expression}"`);
+	    const result = checkParentheses(expression);
+	    
+	    if (result.isValid) {
+	        console.log("✓ 括号匹配正确");
+	    } else {
+	        console.log("✗ 括号不匹配");
+	        console.log("错误详情:");
+	        result.errors.forEach(error => console.log(`  ${error}`));
+	    }
+	    console.log("缺失位置:", result.missingPositions);
+	    console.log("---");
+	}
+
+	// 测试示例
+	const testExpressions = [
+	    "2.3 + 23 / 12 + (3.14159×0.24",  // 题目中的例子
+	    "((a + b) * (c - d))",            // 正确匹配
+	    "2 * (3 + 4))",                   // 多余的右括号
+	    "(1 + (2 * 3)",                   // 未闭合的左括号
+	    ")2 + 3(",                        // 顺序错误
+	    "((1 + 2) * (3 - 4)"              // 缺少一个右括号
+	];
+
+	// 运行测试
+	// testExpressions.forEach(testExpression);
+
+	// 专门处理题目中的例子
+	console.log("=== 题目示例分析 ===");
+	const example = "2.3 + 23 / 12 + (3.14159×0.24";
+	const exampleResult = checkParentheses(example);
+	console.log(`表达式: "${example}"`);
+	console.log(`是否有效: ${exampleResult.isValid}`);
+	console.log(`错误信息: ${exampleResult.errors.join(", ")}`);
+	console.log(`缺失位置: [${exampleResult.missingPositions.join(", ")}]`);
+</script>
+</body>
+</html>
